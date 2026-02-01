@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_error_handling/src/core/result/failure_type.dart';
 
 sealed class Failure {}
@@ -39,6 +41,18 @@ sealed class Result<T> {
         onSuccess?.call(v);
       case FailureResult(failure: final e):
         onFailure?.call(e);
+    }
+  }
+
+  Future whenAsync({
+    Future Function(T value)? onSuccess,
+    Future Function(Failure failure)? onFailure,
+  }) async {
+    switch (this) {
+      case SuccessResult(value: final v):
+        await onSuccess?.call(v);
+      case FailureResult(failure: final e):
+        await onFailure?.call(e);
     }
   }
 }
