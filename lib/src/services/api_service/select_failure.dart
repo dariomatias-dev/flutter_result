@@ -1,6 +1,6 @@
 part of 'api_service.dart';
 
-Failure _selectFailure(
+FailureResult _selectFailure(
   DioException err,
 ) {
   FailureType? type;
@@ -92,8 +92,10 @@ Failure _selectFailure(
       }
   }
 
-  return Failure(
-    type: type,
-    message: message,
+  return FailureResult(
+    ApiFailure(
+      type: type,
+      message: message,
+    ),
   );
 }

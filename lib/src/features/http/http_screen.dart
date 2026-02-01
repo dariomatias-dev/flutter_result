@@ -11,18 +11,7 @@ class HttpScreen extends StatefulWidget {
 }
 
 class _HttpScreenState extends State<HttpScreen> {
-  late HttpController _controller;
-
-  BuildContext _getContext() => context;
-
-  @override
-  void didChangeDependencies() {
-    _controller = HttpController(
-      getContext: _getContext,
-    );
-
-    super.didChangeDependencies();
-  }
+  final _controller = HttpController();
 
   @override
   void dispose() {
@@ -78,7 +67,9 @@ class _HttpScreenState extends State<HttpScreen> {
             ),
             const SizedBox(height: 12.0),
             ElevatedButton(
-              onPressed: _controller.request,
+              onPressed: () {
+                _controller.request(context);
+              },
               child: const Text('Request'),
             ),
           ],

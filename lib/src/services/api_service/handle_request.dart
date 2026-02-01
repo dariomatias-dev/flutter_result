@@ -1,6 +1,6 @@
 part of 'api_service.dart';
 
-Future<Either> _handleRequest(
+Future<Result> _handleRequest(
   Logger logger,
   Future<Response> Function() request,
 ) async {
@@ -8,9 +8,7 @@ Future<Either> _handleRequest(
     final result = await request();
 
     if (result.statusCode == 200 || result.statusCode == 201) {
-      return Success(
-        value: result.data,
-      );
+      return SuccessResult(result.data);
     }
 
     String message = 'Status Code: ${result.statusCode}.';
@@ -24,9 +22,11 @@ Future<Either> _handleRequest(
       error: message,
     );
 
-    return Failure(
-      type: FailureType.unknownError,
-      message: message,
+    return FailureResult(
+      ApiFailure(
+        type: FailureType.unknownError,
+        message: message,
+      ),
     );
   } on DioException catch (err, stackTrace) {
     logger.e(
@@ -43,9 +43,11 @@ Future<Either> _handleRequest(
       stackTrace: stackTrace,
     );
 
-    return Failure(
-      type: FailureType.unknownError,
-      message: err.toString(),
+    return FailureResult(
+      ApiFailure(
+        type: FailureType.unknownError,
+        message: err.toString(),
+      ),
     );
   }
 }

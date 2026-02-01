@@ -1,49 +1,44 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_error_handling/src/core/either/either.dart';
+import 'package:flutter_error_handling/src/core/result/failure_type.dart';
+import 'package:flutter_error_handling/src/core/result/result.dart';
 
 import 'package:flutter_error_handling/src/features/http/status_codes.dart';
 
 import 'package:flutter_error_handling/src/services/api_service/api_service.dart';
+import 'package:flutter_error_handling/src/shared/utils/handle_error.dart';
 
 import 'package:flutter_error_handling/src/shared/utils/show_loading.dart';
 
 class HttpController {
-  HttpController({
-    required BuildContext Function() getContext,
-  }) : _getContext = getContext;
-
-  final BuildContext Function() _getContext;
-
   final _api = ApiService.http;
 
   int statusCode = statusCodes.first;
 
-  Future<void> request() async {
+  Future<void> request(BuildContext context) async {
     final result = await showLoading(
-      _getContext(),
-      () async {
-        return await _api.get('$statusCode');
-      },
+      context,
+      () => _api.get('$statusCode'),
     );
 
-    await result.handle(
-      getContext: _getContext,
-      success: (value) {},
-      failure: (type, message, handleError) async {
-        await _handleError(type, handleError);
+    await result.whenAsync(
+      onFailure: (failure) async {
+        switch (failure) {
+          case ApiFailure():
+            await _handleApiFailure(context, failure);
+        }
       },
     );
   }
 
-  Future<void> _handleError(
-    FailureType type,
-    Future<void> Function() handleError,
+  Future<void> _handleApiFailure(
+    BuildContext context,
+    ApiFailure failure,
   ) async {
-    switch (type) {
+    switch (failure.type) {
       case FailureType.badGateway:
         await showDialog(
-          context: _getContext(),
+          context: context,
           builder: (context) {
             return AlertDialog(
               title: const Text(
@@ -54,7 +49,7 @@ class HttpController {
                 'Local error handling',
                 textAlign: TextAlign.center,
               ),
-              actions: [
+              actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -67,7 +62,7 @@ class HttpController {
         );
         break;
       default:
-        await handleError();
+        await handleError(context, failure);
     }
   }
 

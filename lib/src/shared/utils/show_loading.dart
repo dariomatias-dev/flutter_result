@@ -9,7 +9,7 @@ Future<T> showLoading<T>(
   final overlayEntry = OverlayEntry(
     builder: (context) {
       return Container(
-        color: Colors.black.withOpacity(0.8),
+        color: Colors.black.withAlpha(204),
         constraints: const BoxConstraints.expand(),
         child: const Center(
           child: CircularProgressIndicator(),
