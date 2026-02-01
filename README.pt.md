@@ -5,6 +5,11 @@
 </div>
 <br>
 
+<p align="center">
+<strong>Idioma:</strong>
+Português | <a href="README.md">English</a>
+</p>
+
 <h1 align="center">Gerenciamento de Resultados em Flutter</h1>
 
 <p align="center">
