@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_error_handling/src/core/result/failure_type.dart';
+import 'package:flutter_result/src/core/result/failure_type.dart';
 
 sealed class Failure {}
 

@@ -1,11 +1,11 @@
-name: flutter_error_handling
-description: "Flutter Error Handling."
-publish_to: 'none'
+name: flutter_result
+description: "Flutter Result."
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.4 <4.0.0'
+  sdk: ">=3.3.4 <4.0.0"
 
 dependencies:
   flutter:

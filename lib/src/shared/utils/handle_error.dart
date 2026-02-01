@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_error_handling/src/core/result/result.dart';
+import 'package:flutter_result/src/core/result/result.dart';
 
 Future<void> handleError<T>(
   BuildContext context,

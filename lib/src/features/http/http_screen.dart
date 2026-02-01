@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_error_handling/src/features/http/http_controller.dart';
-import 'package:flutter_error_handling/src/features/http/status_codes.dart';
+import 'package:flutter_result/src/features/http/http_controller.dart';
+import 'package:flutter_result/src/features/http/status_codes.dart';
 
 class HttpScreen extends StatefulWidget {
   const HttpScreen({super.key});

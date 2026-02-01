@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_error_handling/src/flutter_error_handling_app.dart';
+import 'package:flutter_result/src/flutter_result_app.dart';
 
 void main() {
   runApp(
-    const FlutterErrorHandlingApp(),
+    const FlutterResultApp(),
   );
 }

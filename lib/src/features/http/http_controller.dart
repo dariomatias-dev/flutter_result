@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_error_handling/src/core/result/failure_type.dart';
-import 'package:flutter_error_handling/src/core/result/result.dart';
+import 'package:flutter_result/src/core/result/failure_type.dart';
+import 'package:flutter_result/src/core/result/result.dart';
 
-import 'package:flutter_error_handling/src/features/http/status_codes.dart';
+import 'package:flutter_result/src/features/http/status_codes.dart';
 
-import 'package:flutter_error_handling/src/services/api_service/api_service.dart';
-import 'package:flutter_error_handling/src/shared/utils/handle_error.dart';
+import 'package:flutter_result/src/services/api_service/api_service.dart';
+import 'package:flutter_result/src/shared/utils/handle_error.dart';
 
-import 'package:flutter_error_handling/src/shared/utils/show_loading.dart';
+import 'package:flutter_result/src/shared/utils/show_loading.dart';
 
 class ApiSuccessResult {
   final int statusCode;

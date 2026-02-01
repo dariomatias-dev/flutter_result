@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_error_handling/src/core/routes/routes.dart';
+import 'package:flutter_result/src/core/routes/routes.dart';
 
-class FlutterErrorHandlingApp extends StatelessWidget {
-  const FlutterErrorHandlingApp({super.key});
+class FlutterResultApp extends StatelessWidget {
+  const FlutterResultApp({super.key});
 
   @override
   Widget build(BuildContext context) {
