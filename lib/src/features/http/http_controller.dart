@@ -10,6 +10,30 @@ import 'package:flutter_error_handling/src/shared/utils/handle_error.dart';
 
 import 'package:flutter_error_handling/src/shared/utils/show_loading.dart';
 
+class ApiSuccessResult {
+  final int statusCode;
+  final String message;
+
+  ApiSuccessResult({
+    required this.statusCode,
+    required this.message,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'statusCode': statusCode,
+      'message': message,
+    };
+  }
+
+  factory ApiSuccessResult.fromJson(Map<String, dynamic> json) {
+    return ApiSuccessResult(
+      statusCode: json['status'],
+      message: json['message'],
+    );
+  }
+}
+
 class HttpController {
   final _api = ApiService.http;
 
@@ -18,15 +42,53 @@ class HttpController {
   Future<void> request(BuildContext context) async {
     final result = await showLoading(
       context,
-      () => _api.get('$statusCode'),
+      () => _api.get<Map<String, dynamic>>('$statusCode'),
     );
 
     await result.whenAsync(
+      onSuccess: (value) async {
+        await _handleSuccess(context, value);
+      },
       onFailure: (failure) async {
         switch (failure) {
           case ApiFailure():
             await _handleApiFailure(context, failure);
         }
+      },
+    );
+  }
+
+  Future<void> _handleSuccess(
+    BuildContext context,
+    Map<String, dynamic>? value,
+  ) async {
+    final apiSuccess = ApiSuccessResult.fromJson(value!);
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: const Text(
+            'Success',
+            textAlign: TextAlign.center,
+          ),
+          children: <Widget>[
+            Text(
+              'Result: ${apiSuccess.message}',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20.0),
+            Align(
+              alignment: AlignmentGeometry.bottomRight,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Ok'),
+              ),
+            ),
+          ],
+        );
       },
     );
   }

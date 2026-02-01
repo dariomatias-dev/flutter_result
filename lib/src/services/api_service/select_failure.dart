@@ -1,6 +1,6 @@
 part of 'api_service.dart';
 
-FailureResult _selectFailure(
+FailureResult<T> _selectFailure<T>(
   DioException err,
 ) {
   FailureType? type;

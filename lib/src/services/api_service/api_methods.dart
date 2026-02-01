@@ -10,7 +10,7 @@ class ApiMethods {
   final _dio = Dio();
   final _logger = Logger();
 
-  Future<Result> get(
+  Future<Result<T?>> get<T>(
     String path, {
     Map<String, dynamic>? headers,
   }) async {
@@ -24,10 +24,10 @@ class ApiMethods {
     );
   }
 
-  Future<Result> post(
+  Future<Result<T?>> post<T>(
     String path, {
     Map<String, dynamic>? headers,
-    Object? data,
+    T? data,
   }) async {
     return await _callHandleRequest(
       _dio.post(
@@ -40,10 +40,10 @@ class ApiMethods {
     );
   }
 
-  Future<Result> patch(
+  Future<Result<T?>> patch<T>(
     String path, {
     Map<String, dynamic>? headers,
-    Object? data,
+    T? data,
   }) async {
     return await _callHandleRequest(
       _dio.patch(
@@ -56,10 +56,10 @@ class ApiMethods {
     );
   }
 
-  Future<Result> put(
+  Future<Result<T?>> put<T>(
     String path, {
     Map<String, dynamic>? headers,
-    Object? data,
+    T? data,
   }) async {
     return await _callHandleRequest(
       _dio.put(
@@ -72,7 +72,7 @@ class ApiMethods {
     );
   }
 
-  Future<Result> delete(
+  Future<Result<T?>> delete<T>(
     String path, {
     Map<String, dynamic>? headers,
   }) async {
@@ -86,14 +86,12 @@ class ApiMethods {
     );
   }
 
-  Future<Result> _callHandleRequest(
-    Future<Response<dynamic>> request,
+  Future<Result<T?>> _callHandleRequest<T>(
+    Future<Response<T>> request,
   ) async {
     return _handleRequest(
       _logger,
-      () async {
-        return await request;
-      },
+      () => request,
     );
   }
 

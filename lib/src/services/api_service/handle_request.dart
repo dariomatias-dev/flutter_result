@@ -1,14 +1,14 @@
 part of 'api_service.dart';
 
-Future<Result> _handleRequest(
+Future<Result<T?>> _handleRequest<T>(
   Logger logger,
-  Future<Response> Function() request,
+  Future<Response<T>> Function() request,
 ) async {
   try {
     final result = await request();
 
     if (result.statusCode == 200 || result.statusCode == 201) {
-      return SuccessResult(result.data);
+      return SuccessResult<T?>(result.data);
     }
 
     String message = 'Status Code: ${result.statusCode}.';
