@@ -6,14 +6,13 @@
 <br>
 
 <p align="center">
-<strong>Language:</strong>
-English | <a href="README.pt.md">Português</a>
+<strong>Language:</strong> English | <a href="README.pt.md">Português</a>
 </p>
 
 <h1 align="center">Result Management in Flutter</h1>
 
 <p align="center">
-A custom, simple, and extensible solution for handling results in Flutter applications, based on the <strong>Result</strong> concept (success or failure).
+A simple and extensible architecture for handling results in Flutter applications, based on the <strong>Result</strong> concept (success or failure).
 <br>
 <a href="#about-the-project"><strong>Explore the documentation »</strong></a>
 </p>
@@ -21,31 +20,54 @@ A custom, simple, and extensible solution for handling results in Flutter applic
 ## Table of Contents
 
 - [About the Project](#about-the-project)
-- [Solution Objective](#solution-objective)
+- [The Problem](#the-problem)
+- [Objectives](#objectives)
 - [Core Concepts](#core-concepts)
-- [Request Configuration](#request-configuration)
 - [Result Handling](#result-handling)
-- [Local vs Global Handling](#local-vs-global-handling)
+- [Error Handling Strategy](#error-handling-strategy)
 - [License](#license)
 - [Author](#author)
 
+</br>
+
 ## About the Project
 
-This project proposes a clear and predictable approach to result management in Flutter applications, using a custom abstraction based on `Result`, inspired by the `Either` concept, but adapted to Flutter’s ecosystem and the extensive use of asynchronous operations and UI feedback.
+This project demonstrates a clear and predictable approach to result management in Flutter applications, using an abstraction based on `Result`, adapted to Flutter’s ecosystem and the extensive use of asynchronous operations and UI feedback.
 
-The focus of this solution is not to reduce code, but to make success and failure flows explicit, easy to understand, and simple to maintain, even in medium- and large-scale applications.
+The focus of the architecture is not only to reduce code, but to make success and failure flows explicit, predictable, easy to understand, and simple to maintain, even in medium- and large-scale applications.
 
-## Solution Objective
+</br>
 
-The main objectives of this solution are:
+## The Problem
 
-- Standardize the return of asynchronous operations
-- Avoid excessive use of `try/catch`
-- Make error flows predictable and controllable
-- Facilitate local handling of specific errors
-- Improve code readability and maintainability
+In any application, it is common to deal with operations that may fail.  
+Without a standardized approach, code often becomes repetitive, difficult to understand and maintain, and inconsistent in error handling.
 
-This solution does not replace internal exceptions, but provides a clear semantic layer for consuming results within the application.
+Common issues include:
+
+- Excessive use of `try/catch`
+- Inconsistent error handling
+- Unpredictable execution flows
+- Constant null checks
+- Difficulty maintaining and scaling larger applications
+
+The lack of standardization makes code harder to read and increases the risk of unhandled errors or unexpected behavior.
+
+</br>
+
+## Objectives
+
+The architecture aims to solve these problems by:
+
+- Standardizing asynchronous operation results
+- Avoiding excessive use of `try/catch`
+- Making error flows predictable and controllable
+- Facilitating local handling of specific errors
+- Improving readability and maintainability
+
+This approach does not replace internal exceptions but provides a clear semantic layer for managing results in the application.
+
+</br>
 
 ## Core Concepts
 
@@ -53,21 +75,22 @@ This solution does not replace internal exceptions, but provides a clear semanti
 
 `Result<T>` represents the outcome of an operation and can assume two states:
 
-- `SuccessResult<T>`: the operation completed successfully
-- `FailureResult<T>`: the operation failed for some reason
+- `SuccessResult<T>`: operation completed successfully
+- `FailureResult<T>`: operation failed
 
-This separation removes the need to check for null values or catch exceptions at the usage point.
+This separation removes the need to check for null values or catch exceptions at the point of use.
 
 ### Failure
 
-`Failure` represents **known, expected, and treatable** failures within the application.
+`Failure` represents **known, expected, and treatable** failures in the application.
+
 It forms the foundation of the domain error model and **must not be instantiated directly**.
 
-Any error that the application recognizes and knows how to handle should be modeled as a subtype of `Failure`.
+Any error the application recognizes and knows how to handle should be modeled as a subtype of `Failure`.
 
-#### Sealed class
+### Sealed Class
 
-`Failure` is defined as a **`sealed class`**, ensuring that **all possible failures are explicitly controlled by the application domain**.
+`Failure` is defined as a **`sealed class`**, ensuring all possible failures are explicitly controlled by the application domain.
 
 ```dart
 sealed class Failure {}
@@ -75,18 +98,19 @@ sealed class Failure {}
 
 This approach provides:
 
-- Exhaustiveness guarantees when handling failures
+- Exhaustiveness guarantees in failure handling
 - Greater predictability of error flows
-- Clear and implicit documentation of the error domain
+- Clear and explicit identification of failure reasons
 
-#### Creating customizable failures
+### Concrete Implementations of Failure
 
-Each failure must be represented by a **concrete class** extending `Failure`.
-These classes may carry specific information, such as:
+Each failure must be represented by a concrete class extending `Failure`.
+
+These classes can include:
 
 - Error type (`FailureType`)
 - User-friendly message
-- Additional data for decision-making, logging, or metrics
+- Additional data for logs or metrics
 
 Example:
 
@@ -102,89 +126,50 @@ final class ApiFailure extends Failure {
 }
 ```
 
-#### When to create a new `Failure`
+#### When to Create a New Failure
 
 A new `Failure` implementation should be created when:
 
 - The error is known and expected
 - There is a clear action associated with the error
-- The error is part of the application’s domain rules
+- The error is part of the application domain rules
 
-Common examples include:
+Common examples:
 
-- `ApiFailure`
-- `ValidationFailure`
-- `CacheFailure`
+- API Failure (`ApiFailure`)
+- Validation Failure (`ValidationFailure`)
+- Cache Failure (`CacheFailure`)
+- Authentication Failure (`AuthFailure`)
+- Parsing Failure (`ParsingFailure`)
 
-#### Model purpose
-
-The use of `Failure` aims to:
+Purpose of the model:
 
 - Centralize and standardize failure handling
-- Prioritize readability, clarity, and predictability of the code
+- Prioritize clarity and predictability
 
-## Request Configuration
-
-### URL Definition
-
-Base URLs used by requests should be defined separately:
-
-```dart
-class Urls {
-  static const httpUrl = 'https://dummyjson.com/http';
-}
-```
-
-### API Service
-
-The service responsible for HTTP requests encapsulates the base URL:
-
-```dart
-class ApiService {
-  static ApiMethods get http => ApiMethods(
-        baseUrl: Urls.httpUrl,
-      );
-}
-```
-
-### Creating an Instance
-
-```dart
-final _api = ApiService.http;
-```
-
-### Performing Requests
-
-Simple request:
-
-```dart
-final result = await _api.get('[path]');
-```
-
-With headers:
-
-```dart
-final result = await _api.get(
-  '[path]',
-  headers: <String, dynamic>{},
-);
-```
-
-With body:
-
-```dart
-final result = await _api.post(
-  '[path]',
-  headers: <String, dynamic>{},
-  data: <String, dynamic>{},
-);
-```
+</br>
 
 ## Result Handling
 
-### fold
+The API provides different methods depending on the need:
 
-Used when it is necessary to **return a value** from the result:
+1. Returning a value from the result
+2. Executing side effects
+
+The central distinction is:
+
+- `fold` and `foldAsync` return a value
+- `when` and `whenAsync` do not return a value
+
+Synchronous and asynchronous versions differ only in whether the callback requires `await`.
+
+</br>
+
+### Methods Returning Values
+
+#### fold (Synchronous)
+
+Executes synchronous callbacks and returns a value.
 
 ```dart
 final value = result.fold(
@@ -193,9 +178,33 @@ final value = result.fold(
 );
 ```
 
-### when
+#### foldAsync (Asynchronous)
 
-Used for **synchronous side effects**, such as state updates:
+Executes asynchronous callbacks and returns a `Future<T>`.
+
+```dart
+final value = await result.foldAsync(
+  onSuccess: (data) async => data,
+  onFailure: (failure) async => null,
+);
+```
+
+</br>
+
+### Methods for Side Effects
+
+Used when the goal is to perform actions without producing a value.
+
+Examples:
+
+- State updates
+- Showing messages
+- Navigation
+- Additional commands
+
+#### when (Synchronous)
+
+Executes synchronous callbacks without returning a value.
 
 ```dart
 result.when(
@@ -208,27 +217,28 @@ result.when(
 );
 ```
 
-### whenAsync
+#### whenAsync (Asynchronous)
 
-Used for **asynchronous side effects**, such as dialogs, navigation, or additional calls:
+Executes asynchronous callbacks and returns `Future<void>`.
 
 ```dart
 await result.whenAsync(
   onFailure: (failure) async {
-    // Visual feedback or navigation
+    // Dialog, navigation, or other side effects
   },
 );
 ```
 
-The separation between `when` and `whenAsync` is intentional and avoids ambiguities related to `FutureOr`, making the flow explicit and predictable.
+</br>
 
-## Local vs Global Handling
+## Error Handling Strategy
 
-The solution allows errors to be handled locally whenever necessary, keeping control at the point where the action occurs and enabling context-specific responses.
+The architecture supports two levels of failure handling: local and global.
 
 ### Local Handling
 
-Local handling should be used when the screen or flow has a specific response for a given error.
+Local handling should be used when the current context has a specific response to a failure.
+It allows corrective action to be taken directly where the error occurs.
 
 ```dart
 await result.whenAsync(
@@ -242,50 +252,84 @@ await result.whenAsync(
 );
 ```
 
-This type of handling is recommended when:
+Local handling enables:
 
-- The corrective action is known in that context
-- User feedback depends on the current screen
-- The error requires a specific interaction (e.g., dialog, redirect, retry)
+- Screen state updates
+- Custom messages or dialogs
+- Redirection or retry of operations
 
-## Global Error Handler
+### Global Handling
 
-When there is no specific handling in the current context, the failure should be delegated to a **global error handler**.
+Global handling acts as a **fallback** for failures not handled locally or unknown.
+It ensures any unhandled error receives a consistent response, maintaining predictability and standardization in the UI.
+
+The global handler logic:
+
+- Receives failures not handled locally
+- Identifies the type of failure
+- Converts the failure into a user-friendly message
+- Shows standard visual feedback (dialog, alert, snackbar)
+- Avoids business logic decisions; domain remains isolated
+
+Example:
 
 ```dart
-await handleError(context, failure);
+Future<void> handleError(BuildContext context, Failure failure) async {
+  await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Error'),
+        content: Text(failure.message),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+    },
+  );
+}
 ```
 
-The global handler is responsible for:
+Usage in a result flow:
 
-- Providing standardized and consistent user feedback
-- Centralizing the presentation of unhandled errors
-- Avoiding logic duplication across screens
-- Ensuring a uniform experience throughout the application
+```dart
+await result.whenAsync(
+  onFailure: (failure) async {
+    switch (failure) {
+      case ApiFailure():
+        // Local handling
+        break;
+      default:
+        await handleError(context, failure);
+    }
+  },
+);
+```
 
-This mechanism acts as a **fallback**, triggered only when the failure is not resolved at the local level.
+This flow ensures:
 
-### Responsibility of the global handler
+- Failures are checked in the local context first
+- Specific rules are applied when defined
+- Unhandled failures are delegated to the global handler
+- The global handler provides consistent feedback without duplicating logic
 
-The global handler **does not decide business rules**.
-Its responsibility is exclusively to:
-
-- Translate failures into understandable messages
-- Display alerts, dialogs, snackbars, or error screens
-- Maintain visual and behavioral consistency of feedback
-
-This keeps the domain isolated from the presentation layer, while the UI remains clear, predictable, and consistent.
+</br>
 
 ## License
 
-Distributed under the **MIT License**. See the [LICENSE](LICENSE) file for more information.
+Distributed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+
+</br>
 
 ## Author
 
 Developed by **Dário Matias**:
 
-- **Portfolio**: [https://dariomatias-dev.com](https://dariomatias-dev.com)
-- **GitHub**: [https://github.com/dariomatias-dev](https://github.com/dariomatias-dev)
-- **Email**: [matiasdario75@gmail.com](mailto:matiasdario75@gmail.com)
-- **Instagram**: [https://instagram.com/dariomatias_dev](https://instagram.com/dariomatias_dev)
-- **LinkedIn**: [https://linkedin.com/in/dariomatias-dev](https://linkedin.com/in/dariomatias-dev)
+- Portfolio: [https://dariomatias-dev.com](https://dariomatias-dev.com)
+- GitHub: [https://github.com/dariomatias-dev](https://github.com/dariomatias-dev)
+- Email: [matiasdario75@gmail.com](mailto:matiasdario75@gmail.com)
+- Instagram: [https://instagram.com/dariomatias_dev](https://instagram.com/dariomatias_dev)
+- LinkedIn: [https://linkedin.com/in/dariomatias-dev](https://linkedin.com/in/dariomatias-dev)
