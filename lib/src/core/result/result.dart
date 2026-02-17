@@ -32,6 +32,16 @@ sealed class Result<T> {
     };
   }
 
+  Future<R> foldAsync<R>({
+    required Future<R> Function(T value) onSuccess,
+    required Future<R> Function(Failure failure) onFailure,
+  }) async {
+    return switch (this) {
+      SuccessResult(value: final v) => await onSuccess(v),
+      FailureResult(failure: final e) => await onFailure(e),
+    };
+  }
+
   void when({
     void Function(T value)? onSuccess,
     void Function(Failure failure)? onFailure,
