@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_result/src/core/result/failure_type.dart';
-import 'package:flutter_result/src/core/result/result.dart';
+import 'package:flutter_result/src/services/api_service/api_failure.dart';
+import 'package:flutter_result/src/services/api_service/failure_type.dart';
 
 import 'package:flutter_result/src/features/http/status_codes.dart';
 

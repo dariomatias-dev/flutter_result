@@ -1,19 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_result/src/core/result/failure_type.dart';
-
-sealed class Failure {}
-
-final class ApiFailure extends Failure {
-  ApiFailure({
-    required this.type,
-    required this.message,
-  });
-
-  final FailureType type;
-
-  final String message;
-}
+abstract class Failure {}
 
 sealed class Result<T> {
   const Result();

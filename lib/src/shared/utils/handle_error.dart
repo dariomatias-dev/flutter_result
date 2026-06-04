@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_result/src/core/result/result.dart';
+import 'package:flutter_result/src/services/api_service/api_failure.dart';
 
 Future<void> handleError<T>(
   BuildContext context,
