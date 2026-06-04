@@ -14,12 +14,11 @@ class ApiMethods {
     String path, {
     Map<String, dynamic>? headers,
   }) async {
-    return await _callHandleRequest(
-      _dio.get(
-        options: Options(
-          headers: headers,
-        ),
+    return _handleRequest(
+      _logger,
+      () => _dio.get(
         '$_baseUrl/$path',
+        options: Options(headers: headers),
       ),
     );
   }
@@ -29,12 +28,11 @@ class ApiMethods {
     Map<String, dynamic>? headers,
     T? data,
   }) async {
-    return await _callHandleRequest(
-      _dio.post(
-        options: Options(
-          headers: headers,
-        ),
+    return _handleRequest(
+      _logger,
+      () => _dio.post(
         '$_baseUrl/$path',
+        options: Options(headers: headers),
         data: data,
       ),
     );
@@ -45,12 +43,11 @@ class ApiMethods {
     Map<String, dynamic>? headers,
     T? data,
   }) async {
-    return await _callHandleRequest(
-      _dio.patch(
-        options: Options(
-          headers: headers,
-        ),
+    return _handleRequest(
+      _logger,
+      () => _dio.patch(
         '$_baseUrl/$path',
+        options: Options(headers: headers),
         data: data,
       ),
     );
@@ -61,12 +58,11 @@ class ApiMethods {
     Map<String, dynamic>? headers,
     T? data,
   }) async {
-    return await _callHandleRequest(
-      _dio.put(
-        options: Options(
-          headers: headers,
-        ),
+    return _handleRequest(
+      _logger,
+      () => _dio.put(
         '$_baseUrl/$path',
+        options: Options(headers: headers),
         data: data,
       ),
     );
@@ -76,22 +72,12 @@ class ApiMethods {
     String path, {
     Map<String, dynamic>? headers,
   }) async {
-    return await _callHandleRequest(
-      _dio.delete(
-        options: Options(
-          headers: headers,
-        ),
-        '$_baseUrl/$path',
-      ),
-    );
-  }
-
-  Future<Result<T>> _callHandleRequest<T>(
-    Future<Response<T>> request,
-  ) async {
     return _handleRequest(
       _logger,
-      () => request,
+      () => _dio.delete(
+        '$_baseUrl/$path',
+        options: Options(headers: headers),
+      ),
     );
   }
 
