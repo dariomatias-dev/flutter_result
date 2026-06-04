@@ -11,7 +11,7 @@ part 'select_failure.dart';
 part 'handle_request.dart';
 
 class ApiService {
-  static ApiMethods get http => ApiMethods(
-        baseUrl: Urls.httpUrl,
-      );
+  static final ApiMethods http = ApiMethods(
+    baseUrl: Urls.httpUrl,
+  );
 }
