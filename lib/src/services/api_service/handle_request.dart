@@ -7,7 +7,11 @@ Future<Result<T>> _handleRequest<T>(
   try {
     final result = await request();
 
-    if (result.statusCode == 200 || result.statusCode == 201) {
+    final isSuccessStatusCode = result.statusCode != null &&
+        result.statusCode! >= 200 &&
+        result.statusCode! < 300;
+
+    if (isSuccessStatusCode) {
       if (result.data == null) {
         return FailureResult(
           ApiFailure(
