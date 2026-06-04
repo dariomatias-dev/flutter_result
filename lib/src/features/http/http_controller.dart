@@ -60,9 +60,9 @@ class HttpController {
 
   Future<void> _handleSuccess(
     BuildContext context,
-    Map<String, dynamic>? value,
+    Map<String, dynamic> value,
   ) async {
-    final apiSuccess = ApiSuccessResult.fromJson(value!);
+    final apiSuccess = ApiSuccessResult.fromJson(value);
 
     await showDialog(
       context: context,

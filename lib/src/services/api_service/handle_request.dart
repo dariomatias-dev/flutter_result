@@ -1,6 +1,6 @@
 part of 'api_service.dart';
 
-Future<Result<T?>> _handleRequest<T>(
+Future<Result<T>> _handleRequest<T>(
   Logger logger,
   Future<Response<T>> Function() request,
 ) async {
@@ -8,7 +8,16 @@ Future<Result<T?>> _handleRequest<T>(
     final result = await request();
 
     if (result.statusCode == 200 || result.statusCode == 201) {
-      return SuccessResult<T?>(result.data);
+      if (result.data == null) {
+        return FailureResult(
+          ApiFailure(
+            type: FailureType.unknownError,
+            message: 'Response body is null',
+          ),
+        );
+      }
+
+      return SuccessResult<T>(result.data as T);
     }
 
     String message = 'Status Code: ${result.statusCode}.';
