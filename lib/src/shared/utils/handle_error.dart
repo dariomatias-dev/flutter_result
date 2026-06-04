@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_result/src/core/result/result.dart';
+
 import 'package:flutter_result/src/services/api_service/api_failure.dart';
 
 Future<void> handleError<T>(
@@ -29,5 +30,21 @@ Future<void> handleError<T>(
         },
       );
       break;
+    default:
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            title: Text(
+              'Error',
+              textAlign: TextAlign.center,
+            ),
+            content: Text(
+              'An unexpected error occurred.',
+              textAlign: TextAlign.center,
+            ),
+          );
+        },
+      );
   }
 }

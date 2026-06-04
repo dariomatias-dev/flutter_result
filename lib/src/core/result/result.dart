@@ -41,7 +41,7 @@ sealed class Result<T> {
     }
   }
 
-  Future whenAsync({
+  Future<void> whenAsync({
     Future Function(T value)? onSuccess,
     Future Function(Failure failure)? onFailure,
   }) async {
