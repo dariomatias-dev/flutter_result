@@ -14,13 +14,6 @@ class _HttpScreenState extends State<HttpScreen> {
   final _controller = HttpController();
 
   @override
-  void dispose() {
-    _controller.dispose();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

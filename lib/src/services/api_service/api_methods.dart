@@ -80,9 +80,4 @@ class ApiMethods {
       ),
     );
   }
-
-  void close() {
-    _dio.close();
-    _logger.close();
-  }
 }

@@ -127,8 +127,4 @@ class HttpController {
         await handleError(context, failure);
     }
   }
-
-  void dispose() {
-    _api.close();
-  }
 }
