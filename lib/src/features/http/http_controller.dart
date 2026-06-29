@@ -74,7 +74,7 @@ class HttpController {
           ),
           children: <Widget>[
             Text(
-              'Result: ${apiSuccess.message}',
+              'Status: ${apiSuccess.statusCode}\nResult: ${apiSuccess.message}',
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20.0),
