@@ -20,9 +20,9 @@ Future<T> showLoading<T>(
 
   Overlay.of(context).insert(overlayEntry);
 
-  final result = await request();
-
-  overlayEntry.remove();
-
-  return result;
+  try {
+    return await request();
+  } finally {
+    overlayEntry.remove();
+  }
 }
