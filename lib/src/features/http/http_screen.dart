@@ -13,6 +13,20 @@ class HttpScreen extends StatefulWidget {
 class _HttpScreenState extends State<HttpScreen> {
   final _controller = HttpController();
 
+  bool _isLoading = false;
+
+  Future<void> _handleRequest(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await _controller.request(context);
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,9 +74,7 @@ class _HttpScreenState extends State<HttpScreen> {
             ),
             const SizedBox(height: 12.0),
             ElevatedButton(
-              onPressed: () {
-                _controller.request(context);
-              },
+              onPressed: _isLoading ? null : () => _handleRequest(context),
               child: const Text('Request'),
             ),
           ],
