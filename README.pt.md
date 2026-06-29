@@ -89,19 +89,15 @@ Ela constitui a base do modelo de erros do domínio e não deve ser instanciada 
 
 Todo erro que a aplicação reconhece e sabe tratar deve ser modelado como um subtipo de `Failure`.
 
-### Sealed Class
+### Abstract Class
 
-`Failure` é definida como uma `sealed class`, garantindo que todas as falhas possíveis estejam explicitamente controladas pelo domínio da aplicação.
+`Failure` é definida como uma `abstract class`, permitindo que cada feature ou módulo modele suas próprias falhas como subtipos separados, sem ficar restrita a um único arquivo de library (exigência de uma `sealed class`).
 
 ```dart
-sealed class Failure {}
+abstract class Failure {}
 ```
 
-Benefícios:
-
-- Garantia de exaustividade no tratamento de falhas
-- Maior previsibilidade do fluxo de erro
-- Clareza e identificação explícita do motivo da falha
+A garantia de exaustividade vem de onde realmente importa: `Result` é `sealed` (obrigando todo `fold`/`when` a tratar sucesso e falha), e cada `Failure` concreta normalmente carrega um `enum` (ex.: `FailureType`) que os chamadores tratam de forma exaustiva.
 
 ### Implementações Concretas de Failure
 
