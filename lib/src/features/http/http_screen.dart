@@ -4,14 +4,17 @@ import 'package:flutter_result/src/features/http/http_controller.dart';
 import 'package:flutter_result/src/features/http/status_codes.dart';
 
 class HttpScreen extends StatefulWidget {
-  const HttpScreen({super.key});
+  const HttpScreen({super.key, HttpController? controller})
+      : _controller = controller;
+
+  final HttpController? _controller;
 
   @override
   State<HttpScreen> createState() => _HttpScreenState();
 }
 
 class _HttpScreenState extends State<HttpScreen> {
-  final _controller = HttpController();
+  late final _controller = widget._controller ?? HttpController();
 
   bool _isLoading = false;
 

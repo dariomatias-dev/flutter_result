@@ -32,7 +32,9 @@ class ApiSuccessResult {
 }
 
 class HttpController {
-  final _api = ApiService.http;
+  HttpController({ApiMethods? api}) : _api = api ?? ApiService.http;
+
+  final ApiMethods _api;
 
   int statusCode = statusCodes.first;
 
