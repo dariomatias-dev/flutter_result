@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: Wrap(
           direction: Axis.vertical,
-          spacing: 8.0,
+          spacing: 8,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: <Widget>[
             ElevatedButton(

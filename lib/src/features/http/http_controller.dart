@@ -1,36 +1,33 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_result/src/services/api_service/api_failure.dart';
-import 'package:flutter_result/src/services/api_service/failure_type.dart';
-
 import 'package:flutter_result/src/features/http/status_codes.dart';
-
+import 'package:flutter_result/src/services/api_service/api_failure.dart';
 import 'package:flutter_result/src/services/api_service/api_service.dart';
+import 'package:flutter_result/src/services/api_service/failure_type.dart';
 import 'package:flutter_result/src/shared/utils/handle_error.dart';
-
 import 'package:flutter_result/src/shared/utils/show_loading.dart';
 
 class ApiSuccessResult {
-  final int statusCode;
-  final String message;
-
   ApiSuccessResult({
     required this.statusCode,
     required this.message,
   });
+
+  factory ApiSuccessResult.fromJson(Map<String, dynamic> json) {
+    return ApiSuccessResult(
+      statusCode: json['status'] as int,
+      message: json['message'] as String,
+    );
+  }
+
+  final int statusCode;
+  final String message;
 
   Map<String, dynamic> toJson() {
     return {
       'statusCode': statusCode,
       'message': message,
     };
-  }
-
-  factory ApiSuccessResult.fromJson(Map<String, dynamic> json) {
-    return ApiSuccessResult(
-      statusCode: json['status'],
-      message: json['message'],
-    );
   }
 }
 
@@ -64,7 +61,7 @@ class HttpController {
   ) async {
     final apiSuccess = ApiSuccessResult.fromJson(value);
 
-    await showDialog(
+    await showDialog<void>(
       context: context,
       builder: (context) {
         return SimpleDialog(
@@ -77,7 +74,7 @@ class HttpController {
               'Status: ${apiSuccess.statusCode}\nResult: ${apiSuccess.message}',
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 20),
             Align(
               alignment: AlignmentGeometry.bottomRight,
               child: TextButton(
@@ -99,7 +96,7 @@ class HttpController {
   ) async {
     switch (failure.type) {
       case FailureType.badGateway:
-        await showDialog(
+        await showDialog<void>(
           context: context,
           builder: (context) {
             return AlertDialog(
@@ -122,8 +119,7 @@ class HttpController {
             );
           },
         );
-        break;
-      default:
+      case _:
         await handleError(context, failure);
     }
   }

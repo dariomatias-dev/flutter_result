@@ -50,7 +50,7 @@ class _HttpScreenState extends State<HttpScreen> {
                 const Text(
                   'Status Code:',
                 ),
-                const SizedBox(width: 8.0),
+                const SizedBox(width: 8),
                 DropdownButton(
                   value: _controller.statusCode,
                   items: List.generate(
@@ -72,7 +72,7 @@ class _HttpScreenState extends State<HttpScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 12.0),
+            const SizedBox(height: 12),
             ElevatedButton(
               onPressed: _isLoading ? null : () => _handleRequest(context),
               child: const Text('Request'),

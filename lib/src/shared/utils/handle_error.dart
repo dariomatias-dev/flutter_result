@@ -4,7 +4,7 @@ import 'package:flutter_result/src/core/result/result.dart';
 
 import 'package:flutter_result/src/services/api_service/api_failure.dart';
 
-Future<void> handleError<T>(
+Future<void> handleError(
   BuildContext context,
   Failure failure,
 ) async {
@@ -12,7 +12,7 @@ Future<void> handleError<T>(
 
   switch (failure) {
     case ApiFailure():
-      await showDialog(
+      await showDialog<void>(
         context: context,
         builder: (context) {
           return AlertDialog(
@@ -29,9 +29,8 @@ Future<void> handleError<T>(
           );
         },
       );
-      break;
-    default:
-      await showDialog(
+    case _:
+      await showDialog<void>(
         context: context,
         builder: (context) {
           return const AlertDialog(

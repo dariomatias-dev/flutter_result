@@ -64,7 +64,7 @@ FailureResult<T> _selectFailure<T>(
           type = FailureType.networkError;
           message = 'Unknown error occurred: ${err.response?.statusCode}';
       }
-    default:
+    case _:
       if (err.message?.contains('SocketException') ?? false) {
         type = FailureType.networkError;
         message = 'Network error: No internet connection';

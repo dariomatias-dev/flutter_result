@@ -42,8 +42,8 @@ sealed class Result<T> {
   }
 
   Future<void> whenAsync({
-    Future Function(T value)? onSuccess,
-    Future Function(Failure failure)? onFailure,
+    Future<void> Function(T value)? onSuccess,
+    Future<void> Function(Failure failure)? onFailure,
   }) async {
     switch (this) {
       case SuccessResult(value: final v):
@@ -55,13 +55,13 @@ sealed class Result<T> {
 }
 
 final class FailureResult<T> extends Result<T> {
-  final Failure failure;
-
   const FailureResult(this.failure);
+
+  final Failure failure;
 }
 
 final class SuccessResult<T> extends Result<T> {
-  final T value;
-
   const SuccessResult(this.value);
+
+  final T value;
 }

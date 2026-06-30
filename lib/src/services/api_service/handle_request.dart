@@ -24,7 +24,7 @@ Future<Result<T>> _handleRequest<T>(
       return SuccessResult<T>(result.data as T);
     }
 
-    String message = 'Status Code: ${result.statusCode}.';
+    var message = 'Status Code: ${result.statusCode}.';
 
     if (result.data.toString().isNotEmpty) {
       message += '\n${result.data}';
