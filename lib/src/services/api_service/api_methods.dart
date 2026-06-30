@@ -3,12 +3,16 @@ part of 'api_service.dart';
 class ApiMethods {
   ApiMethods({
     required String baseUrl,
-  }) : _baseUrl = baseUrl;
+    Dio? dio,
+    Logger? logger,
+  })  : _baseUrl = baseUrl,
+        _dio = dio ?? Dio(),
+        _logger = logger ?? Logger();
 
   final String _baseUrl;
 
-  final _dio = Dio();
-  final _logger = Logger();
+  final Dio _dio;
+  final Logger _logger;
 
   Future<Result<T>> get<T>(
     String path, {
