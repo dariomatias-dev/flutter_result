@@ -14,16 +14,30 @@ class HttpScreen extends StatefulWidget {
 }
 
 class _HttpScreenState extends State<HttpScreen> {
-  late final _controller = widget._controller ?? HttpController();
-
+  late HttpController _controller;
+  int _statusCode = statusCodes.first;
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget._controller ?? HttpController();
+  }
+
+  @override
+  void didUpdateWidget(HttpScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget._controller != oldWidget._controller) {
+      _controller = widget._controller ?? HttpController();
+    }
+  }
 
   Future<void> _handleRequest(BuildContext context) async {
     setState(() {
       _isLoading = true;
     });
 
-    await _controller.request(context);
+    await _controller.request(context, _statusCode);
 
     if (mounted) {
       setState(() {
@@ -57,7 +71,7 @@ class _HttpScreenState extends State<HttpScreen> {
                 ),
                 const SizedBox(width: 8),
                 DropdownButton(
-                  value: _controller.statusCode,
+                  value: _statusCode,
                   items: List.generate(
                     statusCodes.length,
                     (index) {
@@ -71,7 +85,7 @@ class _HttpScreenState extends State<HttpScreen> {
                   ),
                   onChanged: (value) {
                     setState(() {
-                      _controller.statusCode = value!;
+                      _statusCode = value!;
                     });
                   },
                 ),

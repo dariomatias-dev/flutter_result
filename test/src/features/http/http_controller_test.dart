@@ -7,7 +7,12 @@ import 'package:flutter_result/src/services/api_service/failure_type.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class _FakeApiMethods extends ApiMethods {
-  _FakeApiMethods({this.successJson, this.failure}) : super(baseUrl: '');
+  _FakeApiMethods({this.successJson, this.failure})
+      : assert(
+          successJson != null || failure != null,
+          '_FakeApiMethods requires successJson or failure',
+        ),
+        super(baseUrl: '');
 
   final Map<String, dynamic>? successJson;
   final ApiFailure? failure;
@@ -33,7 +38,7 @@ Future<void> _pumpRequestButton(
       home: Builder(
         builder: (context) {
           return ElevatedButton(
-            onPressed: () => controller.request(context),
+            onPressed: () => controller.request(context, 200),
             child: const Text('go'),
           );
         },

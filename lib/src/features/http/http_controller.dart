@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_result/src/features/http/status_codes.dart';
 import 'package:flutter_result/src/services/api_service/api_failure.dart';
 import 'package:flutter_result/src/services/api_service/api_service.dart';
 import 'package:flutter_result/src/services/api_service/failure_type.dart';
@@ -36,9 +35,7 @@ class HttpController {
 
   final ApiMethods _api;
 
-  int statusCode = statusCodes.first;
-
-  Future<void> request(BuildContext context) async {
+  Future<void> request(BuildContext context, int statusCode) async {
     final result = await showLoading(
       context,
       () => _api.get<Map<String, dynamic>>('$statusCode'),
