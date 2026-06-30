@@ -25,9 +25,11 @@ class _HttpScreenState extends State<HttpScreen> {
 
     await _controller.request(context);
 
-    setState(() {
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override

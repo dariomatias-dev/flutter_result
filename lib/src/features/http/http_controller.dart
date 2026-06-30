@@ -63,6 +63,7 @@ class HttpController {
   ) async {
     final apiSuccess = ApiSuccessResult.fromJson(value);
 
+    if (!context.mounted) return;
     await showDialog<void>(
       context: context,
       builder: (context) {
@@ -98,6 +99,7 @@ class HttpController {
   ) async {
     switch (failure.type) {
       case FailureType.badGateway:
+        if (!context.mounted) return;
         await showDialog<void>(
           context: context,
           builder: (context) {
