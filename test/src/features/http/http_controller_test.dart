@@ -63,6 +63,11 @@ void main() {
 
     expect(find.text('Success'), findsOneWidget);
     expect(find.text('Status: 200\nResult: OK'), findsOneWidget);
+
+    await tester.tap(find.text('Ok'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Success'), findsNothing);
   });
 
   testWidgets('shows local dialog for bad gateway failure', (tester) async {
@@ -79,6 +84,11 @@ void main() {
 
     expect(find.text('Local Treatment'), findsOneWidget);
     expect(find.text('Local error handling'), findsOneWidget);
+
+    await tester.tap(find.text('Ok'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Local Treatment'), findsNothing);
   });
 
   testWidgets('shows generic error dialog for other failures', (tester) async {
