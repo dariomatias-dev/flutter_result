@@ -188,7 +188,7 @@ void main() {
       500: FailureType.internalServerError,
       502: FailureType.badGateway,
       503: FailureType.serviceUnavailable,
-      418: FailureType.networkError,
+      418: FailureType.badResponse,
     };
 
     for (final entry in badResponseCases.entries) {

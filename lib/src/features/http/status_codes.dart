@@ -1,4 +1,4 @@
-final statusCodes = <int>[
+const statusCodes = <int>[
   200, // OK
   201, // Created
   204, // No Content

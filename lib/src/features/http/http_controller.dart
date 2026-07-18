@@ -36,7 +36,19 @@ class HttpController {
 
     await result.whenAsync(
       onSuccess: (value) async {
-        await _handleSuccess(context, value);
+        try {
+          final apiSuccess = ApiSuccessResult.fromJson(value);
+          await _handleSuccess(context, apiSuccess);
+        } catch (_) {
+          if (!context.mounted) return;
+          await handleError(
+            context,
+            ApiFailure(
+              type: FailureType.unknownError,
+              message: 'Failed to parse response body',
+            ),
+          );
+        }
       },
       onFailure: (failure) async {
         switch (failure) {
@@ -49,10 +61,8 @@ class HttpController {
 
   Future<void> _handleSuccess(
     BuildContext context,
-    Map<String, dynamic> value,
+    ApiSuccessResult apiSuccess,
   ) async {
-    final apiSuccess = ApiSuccessResult.fromJson(value);
-
     if (!context.mounted) return;
     await showDialog<void>(
       context: context,
