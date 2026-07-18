@@ -21,13 +21,6 @@ class ApiSuccessResult {
 
   final int statusCode;
   final String message;
-
-  Map<String, dynamic> toJson() {
-    return {
-      'statusCode': statusCode,
-      'message': message,
-    };
-  }
 }
 
 class HttpController {

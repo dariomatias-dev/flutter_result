@@ -67,16 +67,17 @@ void main() {
       expect(failure.type, FailureType.unknownError);
       expect(failure.message, 'Response body is null');
     });
+  });
 
-    test(
-        'returns FailureResult with status message when status is not 2xx '
-        'and no exception is thrown', () async {
+  group('unexpected non-Dio errors', () {
+    test('returns FailureResult when response data does not match type T',
+        () async {
       final api = _apiWithInterceptor((options, handler) {
         handler.resolve(
           Response(
             requestOptions: options,
-            statusCode: 404,
-            data: 'not found',
+            statusCode: 200,
+            data: {'unexpected': 'shape'},
           ),
         );
       });
@@ -85,8 +86,7 @@ void main() {
 
       final failure = (result as FailureResult<String>).failure as ApiFailure;
       expect(failure.type, FailureType.unknownError);
-      expect(failure.message, contains('Status Code: 404.'));
-      expect(failure.message, contains('not found'));
+      expect(failure.message, isNotEmpty);
     });
   });
 

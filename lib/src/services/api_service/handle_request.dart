@@ -7,40 +7,16 @@ Future<Result<T>> _handleRequest<T>(
   try {
     final result = await request();
 
-    final isSuccessStatusCode = result.statusCode != null &&
-        result.statusCode! >= 200 &&
-        result.statusCode! < 300;
-
-    if (isSuccessStatusCode) {
-      if (result.data == null) {
-        return FailureResult(
-          ApiFailure(
-            type: FailureType.unknownError,
-            message: 'Response body is null',
-          ),
-        );
-      }
-
-      return SuccessResult<T>(result.data as T);
+    if (result.data == null) {
+      return FailureResult(
+        ApiFailure(
+          type: FailureType.unknownError,
+          message: 'Response body is null',
+        ),
+      );
     }
 
-    var message = 'Status Code: ${result.statusCode}.';
-
-    if (result.data.toString().isNotEmpty) {
-      message += '\n${result.data}';
-    }
-
-    logger.w(
-      'Warning Log',
-      error: message,
-    );
-
-    return FailureResult(
-      ApiFailure(
-        type: FailureType.unknownError,
-        message: message,
-      ),
-    );
+    return SuccessResult<T>(result.data as T);
   } on DioException catch (err, stackTrace) {
     logger.e(
       'Error Log',
