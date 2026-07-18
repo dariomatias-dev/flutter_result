@@ -87,6 +87,8 @@ class HttpController {
     BuildContext context,
     ApiFailure failure,
   ) async {
+    // Only badGateway gets bespoke handling here, as an example of local
+    // error handling; every other FailureType falls back to handleError.
     switch (failure.type) {
       case FailureType.badGateway:
         if (!context.mounted) return;
