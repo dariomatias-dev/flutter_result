@@ -2,6 +2,7 @@
 <div align="center">
 <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter">
 <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart">
+<img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License">
 </div>
 <br>
 
@@ -16,6 +17,11 @@ Português | <a href="README.md">English</a>
 Arquitetura simples e extensível para lidar com resultados em aplicações Flutter, baseada no conceito de <strong>Result</strong> (sucesso ou falha).
 <br>
 <a href="#sobre-o-projeto"><strong>Explore a documentação »</strong></a>
+<br>
+<br>
+<a href="https://github.com/dariomatias-dev/flutter_result/issues">Reportar Bug</a>
+·
+<a href="https://github.com/dariomatias-dev/flutter_result/issues">Solicitar Funcionalidade</a>
 </p>
 
 ## Sumário
@@ -26,6 +32,8 @@ Arquitetura simples e extensível para lidar com resultados em aplicações Flut
 - [Conceitos Fundamentais](#conceitos-fundamentais)
 - [Tratamento de Resultados](#tratamento-de-resultados)
 - [Estratégia de Tratamento de Erros](#estratégia-de-tratamento-de-erros)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Contribuindo](#contribuindo)
 - [Licença](#licença)
 - [Autor](#autor)
 
@@ -286,12 +294,17 @@ Dessa forma, qualquer operação que falhar sem tratamento local ainda terá um 
 
 ```dart
 Future<void> handleError(BuildContext context, Failure failure) async {
+  final message = switch (failure) {
+    ApiFailure(:final message) => message,
+    _ => 'Ocorreu um erro inesperado.',
+  };
+
   await showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
         title: const Text('Erro'),
-        content: Text(failure.message),
+        content: Text(message),
         actions: <Widget>[
           TextButton(
             onPressed: () {
@@ -331,6 +344,46 @@ Nesse fluxo:
 
 </br>
 
+## Tecnologias Utilizadas
+
+Este projeto foi desenvolvido utilizando as seguintes tecnologias principais:
+
+- **[Flutter](https://flutter.dev/)** – Toolkit de UI do Google para construir aplicações nativas compiladas para mobile, web e desktop a partir de uma única base de código.
+- **[Dart](https://dart.dev/)** – Linguagem de programação usada pelo Flutter, otimizada para apps rápidos em qualquer plataforma.
+- **[dio](https://pub.dev/packages/dio)** – Cliente HTTP usado para implementar o exemplo de serviço de API.
+- **[logger](https://pub.dev/packages/logger)** – Registro estruturado de logs para falhas capturadas pelo serviço de API.
+
+</br>
+
+## Contribuindo
+
+Contribuições tornam a comunidade open-source um lugar incrível para aprender e criar. Qualquer contribuição que você fizer será muito bem-vinda.
+
+Para começar:
+
+1. **Faça um Fork do Projeto**
+2. **Crie sua Feature Branch**
+
+   ```sh
+   git checkout -b feature/MinhaFeature
+   ```
+
+3. **Faça o Commit das suas mudanças**
+
+   ```sh
+   git commit -m 'Add some MinhaFeature'
+   ```
+
+4. **Faça o Push para a Branch**
+
+   ```sh
+   git push origin feature/MinhaFeature
+   ```
+
+5. **Abra um Pull Request**
+
+</br>
+
 ## Licença
 
 Distribuído sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais informações.
@@ -341,8 +394,8 @@ Distribuído sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais inf
 
 Desenvolvido por **Dário Matias**:
 
-- Portfolio: [https://dariomatias-dev.com](https://dariomatias-dev.com)
-- GitHub: [https://github.com/dariomatias-dev](https://github.com/dariomatias-dev)
-- Email: [matiasdario75@gmail.com](mailto:matiasdario75@gmail.com)
-- Instagram: [https://instagram.com/dariomatias_dev](https://instagram.com/dariomatias_dev)
-- LinkedIn: [https://linkedin.com/in/dariomatias-dev](https://linkedin.com/in/dariomatias-dev)
+- **Portfolio**: [dariomatias-dev.com](https://dariomatias-dev.com)
+- **GitHub**: [dariomatias-dev](https://github.com/dariomatias-dev)
+- **Email**: [matiasdario75@gmail.com](mailto:matiasdario75@gmail.com)
+- **Instagram**: [@dariomatias_dev](https://instagram.com/dariomatias_dev)
+- **LinkedIn**: [linkedin.com/in/dariomatias-dev](https://linkedin.com/in/dariomatias-dev)

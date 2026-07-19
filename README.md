@@ -2,6 +2,7 @@
 <div align="center">
 <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter">
 <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart">
+<img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License">
 </div>
 <br>
 
@@ -15,6 +16,11 @@
 A simple and extensible architecture for handling results in Flutter applications, based on the <strong>Result</strong> concept (success or failure).
 <br>
 <a href="#about-the-project"><strong>Explore the documentation »</strong></a>
+<br>
+<br>
+<a href="https://github.com/dariomatias-dev/flutter_result/issues">Report Bug</a>
+·
+<a href="https://github.com/dariomatias-dev/flutter_result/issues">Request Feature</a>
 </p>
 
 ## Table of Contents
@@ -25,6 +31,8 @@ A simple and extensible architecture for handling results in Flutter application
 - [Core Concepts](#core-concepts)
 - [Result Handling](#result-handling)
 - [Error Handling Strategy](#error-handling-strategy)
+- [Built With](#built-with)
+- [Contributing](#contributing)
 - [License](#license)
 - [Author](#author)
 
@@ -271,12 +279,17 @@ Example:
 
 ```dart
 Future<void> handleError(BuildContext context, Failure failure) async {
+  final message = switch (failure) {
+    ApiFailure(:final message) => message,
+    _ => 'An unexpected error occurred.',
+  };
+
   await showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
         title: const Text('Error'),
-        content: Text(failure.message),
+        content: Text(message),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -314,6 +327,46 @@ This flow ensures:
 
 </br>
 
+## Built With
+
+This project was developed using the following core technologies:
+
+- **[Flutter](https://flutter.dev/)** – A UI toolkit by Google for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.
+- **[Dart](https://dart.dev/)** – The programming language used for Flutter, optimized for building fast apps on any platform.
+- **[dio](https://pub.dev/packages/dio)** – HTTP client used to implement the API service example.
+- **[logger](https://pub.dev/packages/logger)** – Structured logging for failures caught by the API service.
+
+</br>
+
+## Contributing
+
+Contributions make the open-source community an amazing place to learn and create. Any contributions you make are greatly appreciated.
+
+To get started:
+
+1. **Fork the Project**
+2. **Create your Feature Branch**
+
+   ```sh
+   git checkout -b feature/AmazingFeature
+   ```
+
+3. **Commit your Changes**
+
+   ```sh
+   git commit -m 'Add some AmazingFeature'
+   ```
+
+4. **Push to the Branch**
+
+   ```sh
+   git push origin feature/AmazingFeature
+   ```
+
+5. **Open a Pull Request**
+
+</br>
+
 ## License
 
 Distributed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
@@ -324,8 +377,8 @@ Distributed under the **MIT License**. See the [LICENSE](LICENSE) file for detai
 
 Developed by **Dário Matias**:
 
-- Portfolio: [https://dariomatias-dev.com](https://dariomatias-dev.com)
-- GitHub: [https://github.com/dariomatias-dev](https://github.com/dariomatias-dev)
-- Email: [matiasdario75@gmail.com](mailto:matiasdario75@gmail.com)
-- Instagram: [https://instagram.com/dariomatias_dev](https://instagram.com/dariomatias_dev)
-- LinkedIn: [https://linkedin.com/in/dariomatias-dev](https://linkedin.com/in/dariomatias-dev)
+- **Portfolio**: [dariomatias-dev.com](https://dariomatias-dev.com)
+- **GitHub**: [dariomatias-dev](https://github.com/dariomatias-dev)
+- **Email**: [matiasdario75@gmail.com](mailto:matiasdario75@gmail.com)
+- **Instagram**: [@dariomatias_dev](https://instagram.com/dariomatias_dev)
+- **LinkedIn**: [linkedin.com/in/dariomatias-dev](https://linkedin.com/in/dariomatias-dev)
