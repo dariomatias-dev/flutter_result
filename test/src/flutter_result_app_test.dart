@@ -4,8 +4,7 @@ import 'package:flutter_result/src/flutter_result_app.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets(
-      'boots with HomeScreen as the initial screen and no debug banner',
+  testWidgets('boots with HomeScreen as the initial screen and no debug banner',
       (tester) async {
     await tester.pumpWidget(const FlutterResultApp());
 

@@ -53,8 +53,7 @@ void main() {
       );
     });
 
-    test('returns FailureResult when status is 2xx but data is null',
-        () async {
+    test('returns FailureResult when status is 2xx but data is null', () async {
       final api = _apiWithInterceptor((options, handler) {
         handler.resolve(Response(requestOptions: options, statusCode: 204));
       });
@@ -62,8 +61,7 @@ void main() {
       final result = await api.get<Map<String, dynamic>>('users');
 
       final failure =
-          (result as FailureResult<Map<String, dynamic>>).failure
-              as ApiFailure;
+          (result as FailureResult<Map<String, dynamic>>).failure as ApiFailure;
       expect(failure.type, FailureType.unknownError);
       expect(failure.message, 'Response body is null');
     });
