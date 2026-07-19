@@ -1,5 +1,5 @@
 name: flutter_result
-description: "Flutter Result."
+description: "A simple and extensible Result-based architecture for handling success and failure in Flutter apps."
 publish_to: "none"
 
 version: 1.0.0+1
